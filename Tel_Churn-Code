@@ -1,0 +1,21 @@
+# Telco_Churning
+Telchurn = read.csv("Telco-Customer-Churn.csv", header = TRUE)
+View(Telchurn)
+library(dplyr)
+Telchurn %>% select(-1)->TelchurnN
+View(TelchurnN)
+str(TelchurnN)
+library(caTools)
+sample.split(TelchurnN$Churn,SplitRatio = 0.70)->split_TelChu
+subset(TelchurnN,split_TelChu==T)->train_Telchurn
+subset(TelchurnN,split_TelChu==F)->test_Telchurn
+library(rpart)
+rpart(Churn~.,data=train_Telchurn)->Tel_Class
+predict(Tel_Class,test_Telchurn,type = "class")->result_classTelco
+table(test_Telchurn$Churn,result_classTelco)
+(1451+234)/(1451+101+324+234)
+install.packages("caret")
+library(caret)
+confusionMatrix(table(test_Telchurn$Churn,result_classTelco))
+install.packages('e1071', dependencies=TRUE)
+confusionMatrix(table(test_Telchurn$Churn,result_classTelco))
